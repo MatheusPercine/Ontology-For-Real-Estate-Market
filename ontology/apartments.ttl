@@ -1,0 +1,502 @@
+@prefix : <http://www.example.org/ontology/apartments#> .
+@prefix apt: <http://www.example.org/ontology/apartments#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.example.org/ontology/apartments> .
+
+<http://www.example.org/ontology/apartments> rdf:type owl:Ontology ;
+                                              rdfs:comment "An enriched ontology for the semantic analysis of the real estate rental market, designed to address standardization and interoperability through concept hierarchies, synonyms, and logical axioms."@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.example.org/ontology/apartments#hasAlternativeLabel
+apt:hasAlternativeLabel rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.example.org/ontology/apartments#concernsApartment
+apt:concernsApartment rdf:type owl:ObjectProperty ;
+                      rdfs:domain apt:Transaction ;
+                      rdfs:range apt:Apartment .
+
+
+###  http://www.example.org/ontology/apartments#hasAmenity
+apt:hasAmenity rdf:type owl:ObjectProperty ;
+               rdfs:domain apt:Apartment ,
+                           apt:InternalRoom ;
+               rdfs:range apt:Amenity .
+
+
+###  http://www.example.org/ontology/apartments#hasIncomeLevel
+apt:hasIncomeLevel rdf:type owl:ObjectProperty ;
+                   rdfs:domain apt:Actor ;
+                   rdfs:range apt:IncomeLevel .
+
+
+###  http://www.example.org/ontology/apartments#hasInternalRoom
+apt:hasInternalRoom rdf:type owl:ObjectProperty ;
+                    rdfs:domain apt:Apartment ;
+                    rdfs:range apt:InternalRoom .
+
+
+###  http://www.example.org/ontology/apartments#hasLandlord
+apt:hasLandlord rdf:type owl:ObjectProperty ;
+                rdfs:domain apt:Transaction ;
+                rdfs:range apt:Actor .
+
+
+###  http://www.example.org/ontology/apartments#hasLocation
+apt:hasLocation rdf:type owl:ObjectProperty ;
+                rdfs:domain apt:Apartment ;
+                rdfs:range apt:Location .
+
+
+###  http://www.example.org/ontology/apartments#hasRenter
+apt:hasRenter rdf:type owl:ObjectProperty ;
+              rdfs:domain apt:Transaction ;
+              rdfs:range apt:Actor .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.example.org/ontology/apartments#allowsCats
+apt:allowsCats rdf:type owl:DatatypeProperty ;
+               rdfs:domain apt:Apartment ;
+               rdfs:range xsd:boolean .
+
+
+###  http://www.example.org/ontology/apartments#allowsDogs
+apt:allowsDogs rdf:type owl:DatatypeProperty ;
+               rdfs:domain apt:Apartment ;
+               rdfs:range xsd:boolean .
+
+
+###  http://www.example.org/ontology/apartments#hasAge
+apt:hasAge rdf:type owl:DatatypeProperty ;
+           rdfs:domain apt:Actor ;
+           rdfs:range xsd:integer .
+
+
+###  http://www.example.org/ontology/apartments#hasBathrooms
+apt:hasBathrooms rdf:type owl:DatatypeProperty ;
+                 rdfs:domain apt:Apartment ;
+                 rdfs:range xsd:decimal .
+
+
+###  http://www.example.org/ontology/apartments#hasBedrooms
+apt:hasBedrooms rdf:type owl:DatatypeProperty ;
+                rdfs:domain apt:Apartment ;
+                rdfs:range xsd:decimal .
+
+
+###  http://www.example.org/ontology/apartments#hasCityName
+apt:hasCityName rdf:type owl:DatatypeProperty ;
+                rdfs:domain apt:Location ;
+                rdfs:range xsd:string .
+
+
+###  http://www.example.org/ontology/apartments#hasEducation
+apt:hasEducation rdf:type owl:DatatypeProperty ;
+                 rdfs:domain apt:Actor ;
+                 rdfs:range xsd:string .
+
+
+###  http://www.example.org/ontology/apartments#hasHoursOfWorkPerWeek
+apt:hasHoursOfWorkPerWeek rdf:type owl:DatatypeProperty ;
+                          rdfs:domain apt:Actor ;
+                          rdfs:range xsd:integer .
+
+
+###  http://www.example.org/ontology/apartments#hasLatitude
+apt:hasLatitude rdf:type owl:DatatypeProperty ;
+                rdfs:domain apt:Location ;
+                rdfs:range xsd:decimal .
+
+
+###  http://www.example.org/ontology/apartments#hasLongitude
+apt:hasLongitude rdf:type owl:DatatypeProperty ;
+                 rdfs:domain apt:Location ;
+                 rdfs:range xsd:decimal .
+
+
+###  http://www.example.org/ontology/apartments#hasNativeCountry
+apt:hasNativeCountry rdf:type owl:DatatypeProperty ;
+                     rdfs:domain apt:Actor ;
+                     rdfs:range xsd:string .
+
+
+###  http://www.example.org/ontology/apartments#hasOccupation
+apt:hasOccupation rdf:type owl:DatatypeProperty ;
+                  rdfs:domain apt:Actor ;
+                  rdfs:range xsd:string .
+
+
+###  http://www.example.org/ontology/apartments#hasPrice
+apt:hasPrice rdf:type owl:DatatypeProperty ;
+             rdfs:domain apt:Apartment ;
+             rdfs:range xsd:decimal .
+
+
+###  http://www.example.org/ontology/apartments#hasRace
+apt:hasRace rdf:type owl:DatatypeProperty ;
+            rdfs:domain apt:Actor ;
+            rdfs:range xsd:string .
+
+
+###  http://www.example.org/ontology/apartments#hasSex
+apt:hasSex rdf:type owl:DatatypeProperty ;
+           rdfs:domain apt:Actor ;
+           rdfs:range xsd:string .
+
+
+###  http://www.example.org/ontology/apartments#hasSquareFeet
+apt:hasSquareFeet rdf:type owl:DatatypeProperty ;
+                  rdfs:domain apt:Apartment ;
+                  rdfs:range xsd:decimal .
+
+
+###  http://www.example.org/ontology/apartments#hasTransactionValue
+apt:hasTransactionValue rdf:type owl:DatatypeProperty ;
+                        rdfs:domain apt:Transaction ;
+                        rdfs:range xsd:decimal .
+
+
+###  http://www.example.org/ontology/apartments#isHeated
+apt:isHeated rdf:type owl:DatatypeProperty ;
+             rdfs:domain apt:Pool ;
+             rdfs:range xsd:boolean .
+
+
+###  http://www.example.org/ontology/apartments#numberOfSpaces
+apt:numberOfSpaces rdf:type owl:DatatypeProperty ;
+                   rdfs:domain apt:Parking ;
+                   rdfs:range xsd:integer .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.example.org/ontology/apartments#Actor
+apt:Actor rdf:type owl:Class .
+
+
+###  http://www.example.org/ontology/apartments#AirConditioning
+apt:AirConditioning rdf:type owl:Class ;
+                    rdfs:subClassOf apt:UtilityAmenity .
+
+
+###  http://www.example.org/ontology/apartments#AlarmSystem
+apt:AlarmSystem rdf:type owl:Class ;
+                rdfs:subClassOf apt:SecurityAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Amenity
+apt:Amenity rdf:type owl:Class .
+
+
+###  http://www.example.org/ontology/apartments#Apartment
+apt:Apartment rdf:type owl:Class .
+
+
+###  http://www.example.org/ontology/apartments#ApartmentWithLeisure
+apt:ApartmentWithLeisure rdf:type owl:Class ;
+                         owl:equivalentClass [ rdf:type owl:Restriction ;
+                                               owl:onProperty apt:hasAmenity ;
+                                               owl:someValuesFrom apt:LeisureAmenity
+                                             ] .
+
+
+###  http://www.example.org/ontology/apartments#ApplianceAmenity
+apt:ApplianceAmenity rdf:type owl:Class ;
+                     rdfs:subClassOf apt:Amenity .
+
+
+###  http://www.example.org/ontology/apartments#Armchair
+apt:Armchair rdf:type owl:Class ;
+             rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Backyard
+apt:Backyard rdf:type owl:Class ;
+             rdfs:subClassOf apt:OutdoorSpace .
+
+
+###  http://www.example.org/ontology/apartments#Balcony
+apt:Balcony rdf:type owl:Class ;
+            rdfs:subClassOf apt:OutdoorSpace .
+
+
+###  http://www.example.org/ontology/apartments#Bed
+apt:Bed rdf:type owl:Class ;
+        rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Bookshelf
+apt:Bookshelf rdf:type owl:Class ;
+              rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#BuildingFeature
+apt:BuildingFeature rdf:type owl:Class ;
+                    rdfs:subClassOf apt:Amenity .
+
+
+###  http://www.example.org/ontology/apartments#CoffeeTable
+apt:CoffeeTable rdf:type owl:Class ;
+                rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Couch
+apt:Couch rdf:type owl:Class ;
+          owl:equivalentClass apt:Sofa ;
+          rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Deck
+apt:Deck rdf:type owl:Class ;
+         rdfs:subClassOf apt:OutdoorSpace .
+
+
+###  http://www.example.org/ontology/apartments#Desk
+apt:Desk rdf:type owl:Class ;
+         rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#DiningChair
+apt:DiningChair rdf:type owl:Class ;
+                rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#DiningTable
+apt:DiningTable rdf:type owl:Class ;
+                rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Dishwasher
+apt:Dishwasher rdf:type owl:Class ;
+               rdfs:subClassOf apt:ApplianceAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Doorman
+apt:Doorman rdf:type owl:Class ;
+            rdfs:subClassOf apt:SecurityAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Elevator
+apt:Elevator rdf:type owl:Class ;
+             rdfs:subClassOf apt:BuildingFeature .
+
+
+###  http://www.example.org/ontology/apartments#Fireplace
+apt:Fireplace rdf:type owl:Class ;
+              rdfs:subClassOf apt:BuildingFeature .
+
+
+###  http://www.example.org/ontology/apartments#FitnessCenter
+apt:FitnessCenter rdf:type owl:Class ;
+                  owl:equivalentClass apt:Gym .
+
+
+###  http://www.example.org/ontology/apartments#FurnitureAmenity
+apt:FurnitureAmenity rdf:type owl:Class ;
+                     rdfs:subClassOf apt:Amenity .
+
+
+###  http://www.example.org/ontology/apartments#GatedCommunity
+apt:GatedCommunity rdf:type owl:Class ;
+                   rdfs:subClassOf apt:SecurityAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Gym
+apt:Gym rdf:type owl:Class ;
+        rdfs:subClassOf apt:LeisureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Hallway
+apt:Hallway rdf:type owl:Class ;
+            rdfs:subClassOf apt:InternalRoom .
+
+
+###  http://www.example.org/ontology/apartments#HighSecurityApartment
+apt:HighSecurityApartment rdf:type owl:Class ;
+                          owl:equivalentClass [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                                       owl:onProperty apt:hasAmenity ;
+                                                                       owl:someValuesFrom apt:Doorman
+                                                                     ]
+                                                                     [ rdf:type owl:Restriction ;
+                                                                       owl:onProperty apt:hasAmenity ;
+                                                                       owl:someValuesFrom apt:GatedCommunity
+                                                                     ]
+                                                                   ) ;
+                                                rdf:type owl:Class
+                                              ] .
+
+
+###  http://www.example.org/ontology/apartments#IncomeLevel
+apt:IncomeLevel rdf:type owl:Class .
+
+
+###  http://www.example.org/ontology/apartments#InternalRoom
+apt:InternalRoom rdf:type owl:Class .
+
+
+###  http://www.example.org/ontology/apartments#InternetAccess
+apt:InternetAccess rdf:type owl:Class ;
+                   rdfs:subClassOf apt:UtilityAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Kitchen
+apt:Kitchen rdf:type owl:Class ;
+            rdfs:subClassOf apt:InternalRoom .
+
+
+###  http://www.example.org/ontology/apartments#Landlord
+apt:Landlord rdf:type owl:Class ;
+             rdfs:subClassOf apt:Actor .
+
+
+###  http://www.example.org/ontology/apartments#LeisureAmenity
+apt:LeisureAmenity rdf:type owl:Class ;
+                   rdfs:subClassOf apt:Amenity .
+
+
+###  http://www.example.org/ontology/apartments#LivingRoom
+apt:LivingRoom rdf:type owl:Class ;
+               rdfs:subClassOf apt:InternalRoom .
+
+
+###  http://www.example.org/ontology/apartments#Location
+apt:Location rdf:type owl:Class .
+
+
+###  http://www.example.org/ontology/apartments#Loft
+apt:Loft rdf:type owl:Class ;
+         rdfs:subClassOf apt:InternalRoom .
+
+
+###  http://www.example.org/ontology/apartments#OfficeChair
+apt:OfficeChair rdf:type owl:Class ;
+                rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#OutdoorSpace
+apt:OutdoorSpace rdf:type owl:Class ;
+                 rdfs:subClassOf apt:Amenity .
+
+
+###  http://www.example.org/ontology/apartments#Over50K
+apt:Over50K rdf:type owl:Class ;
+            rdfs:subClassOf apt:IncomeLevel .
+
+
+###  http://www.example.org/ontology/apartments#Parking
+apt:Parking rdf:type owl:Class ;
+            rdfs:subClassOf apt:BuildingFeature .
+
+
+###  http://www.example.org/ontology/apartments#Patio
+apt:Patio rdf:type owl:Class ;
+          rdfs:subClassOf apt:OutdoorSpace .
+
+
+###  http://www.example.org/ontology/apartments#PetFriendlyApartment
+apt:PetFriendlyApartment rdf:type owl:Class ;
+                         owl:equivalentClass [ rdf:type owl:Class ;
+                                               owl:unionOf ( [ rdf:type owl:Restriction ;
+                                                               owl:onProperty apt:allowsCats ;
+                                                               owl:hasValue "true"^^xsd:boolean
+                                                             ]
+                                                             [ rdf:type owl:Restriction ;
+                                                               owl:onProperty apt:allowsDogs ;
+                                                               owl:hasValue "true"^^xsd:boolean
+                                                             ]
+                                                           )
+                                             ] .
+
+
+###  http://www.example.org/ontology/apartments#Playground
+apt:Playground rdf:type owl:Class ;
+               rdfs:subClassOf apt:LeisureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Pool
+apt:Pool rdf:type owl:Class ;
+         owl:equivalentClass apt:SwimmingPool ;
+         rdfs:subClassOf apt:LeisureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Refrigerator
+apt:Refrigerator rdf:type owl:Class ;
+                 rdfs:subClassOf apt:ApplianceAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Renter
+apt:Renter rdf:type owl:Class ;
+           rdfs:subClassOf apt:Actor .
+
+
+###  http://www.example.org/ontology/apartments#SecurityAmenity
+apt:SecurityAmenity rdf:type owl:Class ;
+                    rdfs:subClassOf apt:Amenity .
+
+
+###  http://www.example.org/ontology/apartments#Sofa
+apt:Sofa rdf:type owl:Class ;
+         rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Storage
+apt:Storage rdf:type owl:Class ;
+            rdfs:subClassOf apt:BuildingFeature .
+
+
+###  http://www.example.org/ontology/apartments#SwimmingPool
+apt:SwimmingPool rdf:type owl:Class .
+
+
+###  http://www.example.org/ontology/apartments#TennisCourt
+apt:TennisCourt rdf:type owl:Class ;
+                rdfs:subClassOf apt:LeisureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#Transaction
+apt:Transaction rdf:type owl:Class .
+
+
+###  http://www.example.org/ontology/apartments#UnderOrEqual50K
+apt:UnderOrEqual50K rdf:type owl:Class ;
+                    rdfs:subClassOf apt:IncomeLevel .
+
+
+###  http://www.example.org/ontology/apartments#UtilityAmenity
+apt:UtilityAmenity rdf:type owl:Class ;
+                   rdfs:subClassOf apt:Amenity .
+
+
+###  http://www.example.org/ontology/apartments#Wardrobe
+apt:Wardrobe rdf:type owl:Class ;
+             rdfs:subClassOf apt:FurnitureAmenity .
+
+
+###  http://www.example.org/ontology/apartments#WasherDryer
+apt:WasherDryer rdf:type owl:Class ;
+                rdfs:subClassOf apt:ApplianceAmenity .
+
+
+###  http://www.example.org/ontology/apartments#basement
+apt:basement rdf:type owl:Class ;
+             rdfs:subClassOf apt:InternalRoom .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

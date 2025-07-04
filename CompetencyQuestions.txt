@@ -1,0 +1,362 @@
+Temos 5 competências a serem testadas. E para cada competência teremos de 2 a 4 perguntas (ou consultas) a fazer.
+
+1. Competências:
+
+C1: Validação de Dados e Filtros (testa a correta população de dados numéricos e a capacidade de fazer filtros básicos).
+C2: Tratamento de Sinônimos (testa a regra owl:equivalentClass e resolve diretamente o problema da padronização de termos).
+C3: Consulta por Categoria Abstrata (testa a hierarquia de classes e a capacidade de fazer buscas por categorias gerais, pilar da interoperabilidade).
+C4: Inferência de Regras Complexas (testa a regra owl:intersectionOf (condições E) e a geração de novo conhecimento).
+C5: Análise Cruzada de Domínios (testa a capacidade de cruzar dados de dois datasets completamente diferentes — apartamentos e pessoas — provando o valor final da interoperabilidade criada pela ontologia).
+
+2. Perguntas de Competência e Respostas:
+
+CQ1 (C1): "Quantos apartamentos no dataset têm mais de 2 quartos E custam menos de $1500 por mês?"
+
+Consulta SPARQL:
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT (COUNT(DISTINCT ?apt) AS ?totalApartments)
+WHERE {
+    ?apt a apt:Apartment ;
+         apt:hasBedrooms ?bedrooms ;
+         apt:hasPrice ?price .
+    FILTER(?bedrooms > 2 && ?price < 1500)
+}
+
+Resposta: 5251
+
+QC2 (C1): "Qual o preço médio de todos os apartamentos?"
+Consulta SPARQL:
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (AVG(?price) AS ?averagePrice)
+WHERE {
+    ?apartment rdf:type apt:Apartment .
+    ?apartment apt:hasPrice ?price .
+}
+
+Resposta:1471.855026190840863838260070
+
+QC3 (C1): "Quantos apartamentos na cidade de 'Chicago' possuem mais de 1 banheiro e também permitem cachorros?"
+Consulta SPARQL:
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (COUNT(DISTINCT ?apartment) AS ?totalApartments)
+WHERE {
+    ?apartment apt:hasLocation [
+        apt:hasCityName "Chicago"
+    ] .
+   
+    ?apartment apt:allowsDogs true .
+
+    ?apartment apt:hasBathrooms ?bathrooms .
+    FILTER(?bathrooms > 1)
+}
+
+Resposta: 49
+
+
+CQ4 (C1): "Quantos atores têm mais de 50 anos de idade e possuem a profissão ('occupation') de 'Tech-support'?"
+
+Consulta SPARQL:
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT (COUNT(DISTINCT ?actor) AS ?totalActors)
+WHERE {
+    ?actor rdf:type apt:Actor .
+    ?actor apt:hasAge ?age .
+    ?actor apt:hasProfession ?profession .
+    
+    FILTER(?age > 50 && ?profession = "Tech-support")
+}
+
+Resposta: 131
+
+
+CQ5 (C2): "Quantos apartamentos possuem academia, independentemente de ela ser chamada de 'Gym' ou 'Fitness Center'?"
+
+Consulta SPARQL (Gym):
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (COUNT(DISTINCT ?apartment) as ?totalWithGymOrSynonym)
+WHERE {
+  ?apartment apt:hasAmenity ?amenity .
+  ?amenity rdf:type apt:Gym . 
+}
+
+Resposta: 36860
+
+Consulta SPARQL (Fitness Center):
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (COUNT(DISTINCT ?apartment) as ?totalWithGymOrSynonym)
+WHERE {
+  ?apartment apt:hasAmenity ?amenity .
+  ?amenity rdf:type apt:FitnessCenter . 
+}
+
+Resposta: 36860
+
+Respostas iguais para as duas consultas, confirmando que o sistema entende sinônimos, ou seja, provando que a regra owl:equivalentClass funciona.
+
+CQ6 (C2): "Quantos apartamentos possuem psicina, independentemente de ela ser chamada de 'Pool' ou 'Swimming Pool'?"
+
+Consulta SPARQL (Pool):
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (COUNT(DISTINCT ?apartment) AS ?totalWithPool)
+WHERE {
+    ?apartment apt:hasAmenity ?amenity .
+    ?amenity rdf:type apt:Pool .
+}
+
+Resposta: 42970
+
+Consulta SPARQL (Swimming Pool):
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (COUNT(DISTINCT ?apartment) AS ?totalWithSwimmingPool)
+WHERE {
+    ?apartment apt:hasAmenity ?amenity .
+    ?amenity rdf:type apt:SwimmingPool .
+}
+
+Resposta: 42970
+
+Respostas iguais para as duas consultas, confirmando que o sistema entende sinônimos, ou seja, provando que a regra owl:equivalentClass funciona.
+
+
+CQ7 (C3): "Na cidade de 'New York', quantos apartamentos possuem alguma comodidade de lazer (LeisureAmenity)?"
+
+Consulta SPARQL:
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT (COUNT(DISTINCT ?apartment) AS ?totalWithLeisureInNY)
+WHERE {
+    ?apartment apt:hasLocation [ apt:hasCityName "New York" ] .
+    ?apartment apt:hasAmenity ?amenity .
+    ?amenity rdf:type/rdfs:subClassOf* apt:LeisureAmenity .
+}
+
+Resposta: 33
+
+
+CQ8 (C3): "Quantos apartamentos no grafo oferecem qualquer tipo de comodidade de segurança?"
+
+Consulta SPARQL:
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT (COUNT(DISTINCT ?apartment) AS ?totalWithSecurityAmenity)
+WHERE {
+    ?apartment apt:hasAmenity ?amenity .
+    ?amenity rdf:type/rdfs:subClassOf* apt:SecurityAmenity .
+}
+
+Resposta: 8933
+
+CQ9 (C3): "Qual é o preço médio dos apartamentos que são considerados 'Mobiliados' (ou seja, que possuem qualquer FurnitureAmenity)?"
+
+Consulta SPARQL:
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT (AVG(?price) AS ?averagePrice)
+WHERE {
+    ?apartment apt:hasAmenity ?amenity .
+    ?amenity rdf:type/rdfs:subClassOf* apt:FurnitureAmenity .
+    ?apartment apt:hasPrice ?price .
+}
+
+Resposta: 0.0 
+A resposta faz sentido, pois a base de dados não contempla a classe de 'mobílias'. Esta classe somente existe na ontologia como regra.
+
+
+CQ10 (C4): "Liste 5 apartamentos que foram automaticamente classificados como de 'Alta Segurança' (HighSecurityApartment)."
+
+Consulta SPARQL:
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?apt_id
+WHERE {
+    ?apartment rdf:type apt:HighSecurityApartment .
+    BIND(STRAFTER(STR(?apartment), "#imovel_") AS ?apt_id)
+}
+LIMIT 5
+
+Resposta:
+
+    apt_id
+
+1 "5509078099"
+
+2 "5509169629"
+
+3 "5509078193"
+
+4 "5509078060"
+
+5 "5465721464"
+
+
+
+CQ11 (C4): "Quais são os 5 apartamentos mais baratos que são bem equipados para um profissional, possuindo tanto Parking (Estacionamento) quanto Internet Access (Acesso à Internet)?"
+
+Consulta SPARQL:
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?apartment_id ?price
+WHERE {
+    ?apartment apt:hasAmenity [ rdf:type apt:Parking ] .
+    ?apartment apt:hasAmenity [ rdf:type apt:InternetAccess ] .
+    ?apartment apt:hasPrice ?price .
+
+    BIND(STRAFTER(STR(?apartment), "#imovel_") AS ?apartment_id)
+}
+ORDER BY ?price
+LIMIT 5
+
+Resposta:
+  apartment_id  price
+
+1 "5664570456" "369.0"
+
+2 "5664570823" "425.0"
+
+3 "5668614681" "425.0"
+
+4 "5121334952" "449.0"
+
+5 "5198495616" "449.0"
+
+
+
+CQ12 (C4): "Identifique 10 apartamentos de 'alto padrão' (custam mais de $3500) e possuem tanto uma comodidade de lazer do tipo Pool (Piscina) quanto uma comodidade de segurança do tipo Doorman (Porteiro)."
+
+Consulta SPARQL:
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?apartment_id ?price
+WHERE {
+    ?apartment apt:hasAmenity [ rdf:type apt:Pool ] .
+    ?apartment apt:hasAmenity [ rdf:type apt:Doorman ] .
+    ?apartment apt:hasPrice ?price .
+    FILTER(?price > 3500)
+    
+    BIND(STRAFTER(STR(?apartment), "#imovel_") AS ?apartment_id)
+}
+ORDER BY DESC(?price)
+LIMIT 10
+
+Resposta:
+  apartment_id  price
+
+1 "5508965322" "3995.0"
+
+2 "5508703963" "3975.0"
+
+3 "5509009120" "3970.0"
+
+4 "5509007396" "3840.0"
+
+5 "5121832958" "3815.0"
+
+6 "5508965823" "3800.0"
+
+7 "5121787675" "3750.0"
+
+
+
+CQ13 (C5): "Qual a profissão mais comum entre os inquilinos que alugaram apartamentos classificados como 'Pet-Friendly'?"
+
+Consulta SPARQL:
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+
+SELECT ?profession (COUNT(?profession) AS ?total)
+WHERE {
+    ?transaction apt:concernsApartment ?apartment ;
+                 apt:hasRenter ?renter .
+
+    ?apartment rdf:type apt:PetFriendlyApartment .
+
+    ?renter apt:hasProfession ?profession .
+}
+GROUP BY ?profession
+ORDER BY DESC(?total)
+LIMIT 1
+
+Resposta: Profession: "Craft-repair" Total: "9822"
+Os indivíduos foram aleatoriamente alocados a um apartamento. Temos menos indivíduos do que apartamentos, então necessariamente poderemos ter um inquilino que pode alugar vários apartamentos.
+
+
+
+CQ14 (C5): "Qual é o preço médio do aluguel pago por atores com alta renda (>50K) em comparação com o preço médio pago por atores com baixa renda (<=50K)?"
+
+Consulta SPARQL:
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?incomeLevelLabel (AVG(?transactionValue) AS ?averagePrice)
+WHERE {
+    ?transaction apt:hasRenter ?renter ;
+                 apt:hasTransactionValue ?transactionValue .
+    
+    ?renter apt:hasIncomeLevel ?incomeLevel .
+
+    BIND(STRAFTER(STR(?incomeLevel), "#") AS ?incomeLevelLabel)
+}
+
+GROUP BY ?incomeLevelLabel
+
+
+Resposta: 
+   incomeLevelLabel       averagePrice
+
+1 "UnderOrEqual50K" "1472.634743305750624482403399"
+
+2 "Over50K" "1469.411122375702276855489376"
+
+
+CQ15 (C5): "Quantos apartamentos com comodidades de lazer (ApartmentWithLeisure) foram alugados por inquilinos cuja profissão é 'Prof-specialty'?"
+
+Consulta SPARQL:
+
+PREFIX apt: <http://www.example.org/ontology/apartments#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (COUNT(DISTINCT ?apartment) AS ?total)
+WHERE {
+    ?apartment rdf:type apt:ApartmentWithLeisure .
+    ?transaction apt:concernsApartment ?apartment .
+    ?transaction apt:hasRenter ?renter .
+    ?renter apt:hasProfession "Prof-specialty" .
+}
+
+Resposta: 12733
