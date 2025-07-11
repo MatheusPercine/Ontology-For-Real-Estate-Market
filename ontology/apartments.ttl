@@ -5,7 +5,7 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://www.example.org/ontology/apartments> .
+@base <http://www.example.org/ontology/apartments#> .
 
 <http://www.example.org/ontology/apartments> rdf:type owl:Ontology ;
                                               rdfs:comment "An enriched ontology for the semantic analysis of the real estate rental market, designed to address standardization and interoperability through concept hierarchies, synonyms, and logical axioms."@en .
@@ -214,7 +214,8 @@ apt:ApartmentWithLeisure rdf:type owl:Class ;
                          owl:equivalentClass [ rdf:type owl:Restriction ;
                                                owl:onProperty apt:hasAmenity ;
                                                owl:someValuesFrom apt:LeisureAmenity
-                                             ] .
+                                             ] ;
+                         rdfs:subClassOf apt:Apartment .
 
 
 ###  http://www.example.org/ontology/apartments#ApplianceAmenity
@@ -340,7 +341,8 @@ apt:HighSecurityApartment rdf:type owl:Class ;
                                                                      ]
                                                                    ) ;
                                                 rdf:type owl:Class
-                                              ] .
+                                              ] ;
+                          rdfs:subClassOf apt:Apartment .
 
 
 ###  http://www.example.org/ontology/apartments#IncomeLevel
@@ -422,7 +424,8 @@ apt:PetFriendlyApartment rdf:type owl:Class ;
                                                                owl:hasValue "true"^^xsd:boolean
                                                              ]
                                                            )
-                                             ] .
+                                             ] ;
+                         rdfs:subClassOf apt:Apartment .
 
 
 ###  http://www.example.org/ontology/apartments#Playground
